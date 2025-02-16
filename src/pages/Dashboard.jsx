@@ -367,6 +367,7 @@ const Dashboard = () => {
     };
 
   return (
+    
     <div className="p-6 bg-gray-50 min-h-screen overflow-x-hidden">
       {/* Stats Grid */}
       <div className="mb-8">
