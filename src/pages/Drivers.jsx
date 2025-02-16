@@ -7,39 +7,42 @@ const Drivers = () => {
   const itemsPerPage = 4;
 
   // Function to fetch driver data from the API
-  useEffect(() => {
-    const fetchDrivers = async () => {
-      try {
-        const response = await fetch(
-          "https://dashtar-new.vercel.app/api/driverRequest/get"
-        );
-        const data = await response.json();
-        if (data.success) {
-          // Map the API response to the structure used in the table
-          const mappedDrivers = data.data.map((driver) => ({
-            id: driver._id,
-            name: driver.fullName,
-            joinDate: new Date(driver.createdAt).toLocaleDateString(),
-            vehicleType: driver.vehicleDetails
-              ? `${driver.vehicleDetails.make} ${driver.vehicleDetails.model}`
-              : "N/A",
-            status: driver.status,
-            phone: driver.contactNumber,
-            vehicleNumber: driver.vehicleDetails
-              ? driver.vehicleDetails.numberPlate
-              : "N/A",
-          }));
-          setDrivers(mappedDrivers);
-        }
-      } catch (error) {
-        console.error("Error fetching drivers:", error);
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const fetchDrivers = async () => {
+    try {
+      const response = await fetch(
+        "https://dashtar-new.vercel.app/api/driverRequest/get"
+      );
+      const data = await response.json();
+      console.log("API Response:", data); // Debugging log
+      if (data && Array.isArray(data)) {
+        const mappedDrivers = data.map((driver) => ({
+          id: driver._id,
+          name: driver.fullName,
+          joinDate: new Date(driver.createdAt).toLocaleDateString(),
+          vehicleType: driver.vehicleDetails
+            ? `${driver.vehicleDetails.make} ${driver.vehicleDetails.model}`
+            : "N/A",
+          status: driver.status,
+          phone: driver.contactNumber,
+          vehicleNumber: driver.vehicleDetails
+            ? driver.vehicleDetails.numberPlate
+            : "N/A",
+        }));
+        setDrivers(mappedDrivers);
+      } else {
+        console.error("Unexpected API response structure:", data);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching drivers:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchDrivers();
-  }, []);
+  fetchDrivers();
+}, []);
+
 
   // Calculate pagination details
   const totalPages = Math.ceil(drivers.length / itemsPerPage);
