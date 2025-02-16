@@ -11,7 +11,7 @@ const Drivers = () => {
     const fetchDrivers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5055/api/driverRequest/get"
+          "https://dashtar-new.vercel.app/api/driverRequest/get"
         );
         const data = await response.json();
         if (data.success) {

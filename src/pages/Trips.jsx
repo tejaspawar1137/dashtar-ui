@@ -11,7 +11,7 @@ const Trips = () => {
     const fetchRides = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5055/api/rideRequest/getAllRides"
+          "https://dashtar-new.vercel.app/api/rideRequest/getAllRides"
         );
         const data = await response.json();
         if (data.success) {

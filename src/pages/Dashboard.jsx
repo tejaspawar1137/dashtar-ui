@@ -267,7 +267,7 @@ const Dashboard = () => {
     const fetchDashboard = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5055/api/admin/dashboard"
+          "https://dashtar-new.vercel.app/api/admin/dashboard"
         );
         const data = await response.json();
 
@@ -285,9 +285,7 @@ const Dashboard = () => {
     return <div className="p-6">Loading dashboard...</div>;
   }
 
-  if (!dashboardData) {
-    return <div className="p-6">No dashboard data available</div>;
-  }
+
 
   // Generate dummy chart arrays based on API metrics (for demo purposes)
   const generateChartData = (value) => {
@@ -297,21 +295,21 @@ const Dashboard = () => {
     }));
   };
 
-  const finishedTripsChart = generateChartData(dashboardData.finishedTrips);
-  const newUsersChart = generateChartData(dashboardData.newUsers.length);
-  const totalEarningsChart = generateChartData(dashboardData.totalEarnings);
-  const cancelledTripsChart = generateChartData(dashboardData.cancelledTrips);
+  const finishedTripsChart = generateChartData(dashboardData?.finishedTrips);
+  const newUsersChart = generateChartData(dashboardData?.newUsers?.length);
+  const totalEarningsChart = generateChartData(dashboardData?.totalEarnings);
+  const cancelledTripsChart = generateChartData(dashboardData?.cancelledTrips);
 
   // Revenue dummy data (using totalRevenue from API)
   const revenueData = Array.from({ length: 6 }, (_, i) => ({
     name: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"][i],
     Previous: 0,
-    Current:  dashboardData.totalRevenue,
+    Current:  dashboardData?.totalRevenue,
   }));
 
   // Ongoing Trips dummy data (if ongoingTrips > 0, create one dummy trip)
   const ongoingTripsData =
-    dashboardData.ongoingTrips > 0
+    dashboardData?.ongoingTrips > 0
       ? [
           {
             tripId: "#12345",
@@ -323,7 +321,7 @@ const Dashboard = () => {
       : [];
 
   // Map driverDetails to table rows data
-  const driversData = dashboardData.driverDetails.map((driver, index) => ({
+  const driversData = dashboardData?.driverDetails.map((driver, index) => ({
     no: index + 1,
     name: driver.fullName,
     joinDate: new Date(driver.createdAt).toLocaleDateString(),
@@ -374,7 +372,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard
           title="Finished Trips"
-          value={dashboardData.finishedTrips}
+          value={dashboardData?.finishedTrips}
           unit="trips"
           period="Monthly"
           data={finishedTripsChart}
@@ -384,7 +382,7 @@ const Dashboard = () => {
         />
         <StatCard
           title="New Users"
-          value={dashboardData.newUsers.length}
+          value={dashboardData?.newUsers?.length}
           unit="users"
           period="Monthly"
           data={newUsersChart}
@@ -394,7 +392,7 @@ const Dashboard = () => {
         />
         <StatCard
           title="Total Earnings"
-          value={dashboardData.totalEarnings}
+          value={dashboardData?.totalEarnings}
           unit="USD"
           period="Weekly"
           data={totalEarningsChart}
@@ -404,7 +402,7 @@ const Dashboard = () => {
         />
         <StatCard
           title="Cancelled Trips"
-          value={dashboardData.cancelledTrips}
+          value={dashboardData?.cancelledTrips}
           unit="trips"
           period="Monthly"
           data={cancelledTripsChart}
@@ -423,7 +421,7 @@ const Dashboard = () => {
           <OngoingTrips ongoingTripsData={ongoingTripsData} />
         </div>
         <div className="lg:col-span-4">
-          <SalaryStatus salaryStatus={dashboardData.salaryStatus} />
+          <SalaryStatus salaryStatus={dashboardData?.salaryStatus} />
         </div>
       </div>
 
@@ -470,7 +468,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {driversData.map((driver) => (
+              {driversData?.map((driver) => (
                 <tr key={driver.no} className="border-t hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {driver.no}
