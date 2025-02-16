@@ -30,7 +30,7 @@ const SidebarSubMenu = ({ route }) => {
         </button>
         {open && (
           <ul
-            className="p-2  overflow-hidden text-sm font-medium text-gray-500 rounded-md dark:text-gray-400 dark:bg-gray-900"
+            className="p-2  overflow-hidden text-sm font-medium text-gray-500 rounded-md dark:text-gray-400 "
             aria-label="submenu"
           >
             {route.routes.map((child, i) => (

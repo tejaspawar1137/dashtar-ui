@@ -192,7 +192,7 @@ const myTheme = {
     },
     modern: {
       base: "text-white bg-gray-800 border border-transparent",
-      active: "active:bg-gray-800 hover:bg-gray-900",
+      active: "active:bg-gray-800 ",
       disabled: "opacity-50 cursor-not-allowed",
     },
     outline: {
