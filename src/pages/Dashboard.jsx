@@ -205,35 +205,48 @@ const OngoingTrips = ({ ongoingTripsData }) => {
 };
 
 // SalaryStatus component
+
 const SalaryStatus = ({ salaryStatus }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm w-full">
+    <div className="bg-white rounded-xl shadow-sm w-full overflow-hidden">
       <div className="p-6 border-b flex justify-between items-center">
         <h3 className="text-gray-800 font-semibold">Salary Status</h3>
       </div>
-      <div className="p-4">
-        {/* Header Row */}
-        <div className="grid grid-cols-5 gap-4 px-4 py-2 text-sm text-gray-500 border-b font-medium">
-          <div>Name</div>
-          <div>Transaction ID</div>
-          <div>Amount</div>
-          <div>Status</div>
-          <div>Action</div>
-        </div>
-        <div className="space-y-2">
-          {salaryStatus && salaryStatus.length > 0 ? (
-            salaryStatus.map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-5 gap-4 px-4 py-3 text-sm items-center hover:bg-gray-50 rounded-lg"
-              >
-                <div className="text-gray-900 capitalize">{item.name}</div>
-                <div className="text-gray-900">{item.transactionId}</div>
-                <div className="text-gray-900">
-                  {item.amount !== undefined ? `₹${item.amount}` : "N/A"}
-                </div>
-                <div className="text-gray-900 capitalize">{item.status}</div>
-                <div className="text-gray-900 capitalize">
+      <div className="p-4 overflow-x-auto">
+        {/* Responsive Wrapper */}
+        <div className="min-w-[600px] md:min-w-full">
+          {/* Header Row */}
+          <div className="hidden md:grid grid-cols-5 gap-4 px-4 py-2 text-sm text-gray-500 border-b font-medium">
+            <div>Name</div>
+            <div>Transaction ID</div>
+            <div>Amount</div>
+            <div>Status</div>
+            <div>Action</div>
+          </div>
+
+          <div className="space-y-2">
+            {salaryStatus && salaryStatus.length > 0 ? (
+              salaryStatus.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 md:grid-cols-5 gap-4 px-4 py-3 text-sm items-center hover:bg-gray-50 rounded-lg border md:border-none"
+                >
+                  {/* Mobile Layout */}
+                  <div className="md:hidden text-gray-500">Name:</div>
+                  <div className="text-gray-900 capitalize">{item.name}</div>
+
+                  <div className="md:hidden text-gray-500">Transaction ID:</div>
+                  <div className="text-gray-900">{item.transactionId}</div>
+
+                  <div className="md:hidden text-gray-500">Amount:</div>
+                  <div className="text-gray-900">
+                    {item.amount !== undefined ? `₹${item.amount}` : "N/A"}
+                  </div>
+
+                  <div className="md:hidden text-gray-500">Status:</div>
+                  <div className="text-gray-900 capitalize">{item.status}</div>
+
+                  <div className="md:hidden text-gray-500">Action:</div>
                   <div className="flex space-x-3">
                     <button className="text-blue-600 hover:text-blue-800">
                       <Edit2 className="w-4 h-4" />
@@ -243,16 +256,19 @@ const SalaryStatus = ({ salaryStatus }) => {
                     </button>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <div className="text-gray-500 text-center py-4">No salary data</div>
-          )}
+              ))
+            ) : (
+              <div className="text-gray-500 text-center py-4">No salary data</div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+
+
 
 
 
@@ -351,7 +367,7 @@ const Dashboard = () => {
     };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 bg-gray-50 min-h-screen overflow-x-hidden">
       {/* Stats Grid */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
@@ -468,7 +484,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {driversData?.map((driver) => (
+              {driversData.map((driver) => (
                 <tr key={driver.no} className="border-t hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {driver.no}
