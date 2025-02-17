@@ -172,7 +172,7 @@ const OngoingTrips = ({ ongoingTripsData }) => {
         </div>
         <div className="space-y-2">
           {ongoingTripsData && ongoingTripsData.length > 0 ? (
-            ongoingTripsData.map((trip) => (
+            ongoingTripsData?.map((trip) => (
               <div
                 key={trip.tripId}
                 className="grid grid-cols-4 gap-4 px-4 py-3 text-sm items-center hover:bg-gray-50 rounded-lg"
@@ -485,7 +485,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {driversData.map((driver) => (
+              {driversData?.map((driver) => (
                 <tr key={driver.no} className="border-t hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {driver.no}
