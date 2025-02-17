@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Menu, Search, Bell } from "lucide-react";
+import { SidebarContext } from "@/context/SidebarContext";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-
+  const { toggleSidebar } = useContext(SidebarContext);
   return (
     <header className="w-full bg-white border-b border-gray-100">
       <div className="flex items-center justify-between px-6 py-3">
@@ -19,7 +20,10 @@ const Header = () => {
           </div>
 
           {/* Menu Button */}
-          <button className="p-2 hover:bg-gray-100 rounded-lg">
+          <button
+            className="p-2 hover:bg-gray-100 rounded-lg block md:hidden"
+            onClick={toggleSidebar}
+          >
             <Menu className="w-7 h-7 text-gray-700" />
           </button>
         </div>

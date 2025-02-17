@@ -11,7 +11,8 @@ import ThemeSuspense from "@/components/theme/ThemeSuspense";
 const Page404 = lazy(() => import("@/pages/404"));
 
 const Layout = () => {
-  const { isSidebarOpen, closeSidebar, navBar } = useContext(SidebarContext);
+  const { isSidebarOpen, closeSidebar, navBar, setNavBar } =
+    useContext(SidebarContext);
   let location = useLocation();
 
   const isOnline = navigator.onLine;
@@ -35,7 +36,7 @@ const Layout = () => {
           isSidebarOpen && "overflow-hidden"
         }`}
       >
-        {navBar && <Sidebar />}
+        {navBar && <Sidebar  />}
 
         <div className="flex flex-col flex-1 w-full">
           <Header />
