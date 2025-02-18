@@ -12,6 +12,356 @@ import {
 import { Edit2, Trash2, MoreVertical } from "lucide-react";
 import GoogleMapFinder from "@/components/dashboard/GoogleMapFinder";
 
+const UpdateDriverModal = ({ isOpen, onClose, driver, onUpdate }) => {
+  console.log(driver,'driver')
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    contactNumber: "",
+    email: "",
+    salary: "",
+    transactionId: "",
+    vehicleDetails: {
+      make: "",
+      model: "",
+      year: "",
+      color: "",
+      RC: "",
+      numberPlate: "",
+      insuranceExpiry: "",
+    },
+  });
+  console.log(formData,)
+  useEffect(() => {
+    const fetchDriverDetails = async () => {
+     
+        try {
+          const response = await fetch(
+            `https://dashtar-new.vercel.app/api/admin/getDriver/${driver}`
+          );
+          const result = await response.json();
+
+          if (result.success) {
+            const { data } = result;
+            setFormData({
+              fullName: data.fullName || "",
+              contactNumber: data.contactNumber || "",
+              email: data.email || "",
+              salary: data.salary || "",
+              transactionId: data.transactionId || "",
+              vehicleDetails: {
+                make: data.vehicleDetails?.make || "",
+                model: data.vehicleDetails?.model || "",
+                year: data.vehicleDetails?.year || "",
+                color: data.vehicleDetails?.color || "",
+                RC: data.vehicleDetails?.RC || "",
+                numberPlate: data.vehicleDetails?.numberPlate || "",
+                insuranceExpiry: data.vehicleDetails?.insuranceExpiry
+                  ? data.vehicleDetails.insuranceExpiry.split("T")[0]
+                  : "",
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching driver details:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+
+    fetchDriverDetails();
+  }, [driver, isOpen]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `https://dashtar-new.vercel.app/api/admin/updateDriver/${driver}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+    
+        onUpdate();
+        onClose();
+        
+         fetchDashboard();
+    
+     
+    } catch (error) {
+      console.error("Error updating driver:", error);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+      <div className="flex min-h-full items-center justify-center p-4">
+        <div className="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white p-6 shadow-xl transition-all">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Update Driver Details
+            </h3>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            >
+              {/* <X className="w-5 h-5" /> */}
+            </button>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center items-center h-40">
+              <div className="text-gray-500">Loading driver details...</div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, fullName: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Contact Number
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.contactNumber}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        contactNumber: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Salary
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.salary}
+                    onChange={(e) =>
+                      setFormData({ ...formData, salary: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Transaction ID
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.transactionId}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        transactionId: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <h4 className="text-md font-medium text-gray-900 mb-4">
+                  Vehicle Details
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Make
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.vehicleDetails.make}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          vehicleDetails: {
+                            ...formData.vehicleDetails,
+                            make: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Model
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.vehicleDetails.model}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          vehicleDetails: {
+                            ...formData.vehicleDetails,
+                            model: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Year
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.vehicleDetails.year}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          vehicleDetails: {
+                            ...formData.vehicleDetails,
+                            year: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Color
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.vehicleDetails.color}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          vehicleDetails: {
+                            ...formData.vehicleDetails,
+                            color: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      RC Number
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.vehicleDetails.RC}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          vehicleDetails: {
+                            ...formData.vehicleDetails,
+                            RC: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Number Plate
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.vehicleDetails.numberPlate}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          vehicleDetails: {
+                            ...formData.vehicleDetails,
+                            numberPlate: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Insurance Expiry
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.vehicleDetails.insuranceExpiry}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          vehicleDetails: {
+                            ...formData.vehicleDetails,
+                            insuranceExpiry: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4 mt-6">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // StatCard component for displaying individual metrics
 const StatCard = ({
   title,
@@ -207,17 +557,32 @@ const OngoingTrips = ({ ongoingTripsData }) => {
 // SalaryStatus component
 
 
-const SalaryStatus = ({ salaryStatus }) => {
+const SalaryStatus = ({
+  setSelectedDriver,
+  salaryStatus,
+  setIsUpdateModalOpen,
+  handleDelete
+}) => {
   return (
     <div className="w-full bg-white">
       <table className="w-full min-w-full table-auto">
         <thead>
           <tr className="border-b">
-            <th className="text-left py-4 px-6 text-gray-500 font-medium">Name</th>
-            <th className="text-left py-4 px-6 text-gray-500 font-medium">Transaction ID</th>
-            <th className="text-left py-4 px-6 text-gray-500 font-medium">Amount</th>
-            <th className="text-left py-4 px-6 text-gray-500 font-medium">Status</th>
-            <th className="text-left py-4 px-6 text-gray-500 font-medium">Action</th>
+            <th className="text-left py-4 px-6 text-gray-500 font-medium">
+              Name
+            </th>
+            <th className="text-left py-4 px-6 text-gray-500 font-medium">
+              Transaction ID
+            </th>
+            <th className="text-left py-4 px-6 text-gray-500 font-medium">
+              Amount
+            </th>
+            <th className="text-left py-4 px-6 text-gray-500 font-medium">
+              Status
+            </th>
+            <th className="text-left py-4 px-6 text-gray-500 font-medium">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -226,22 +591,32 @@ const SalaryStatus = ({ salaryStatus }) => {
               <td className="py-4 px-6 text-gray-900">{item.name}</td>
               <td className="py-4 px-6 text-gray-900">{item.transactionId}</td>
               <td className="py-4 px-6 text-gray-900">
-                {item.amount !== undefined ? `₹${item.amount}` : ''}
+                {item.amount !== undefined ? `₹${item.amount}` : ""}
               </td>
               <td className="py-4 px-6 text-gray-900">
-                <span className={`${
-                  item.status === 'On-Duty' ? 'text-green-600' : 'text-red-600'
-                }`}>
+                <span
+                  className={`${
+                    item.status === "On-Duty"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
                   {item.status}
                 </span>
               </td>
               <td className="py-4 px-6">
                 <div className="flex space-x-4">
                   <button className="text-blue-600 hover:text-blue-800">
-                    <Edit2 className="w-5 h-5" />
+                    <Edit2
+                      className="w-5 h-5"
+                      onClick={() => {
+                        setSelectedDriver(item?.userId);
+                        setIsUpdateModalOpen(true);
+                      }}
+                    />
                   </button>
                   <button className="text-red-600 hover:text-red-800">
-                    <Trash2 className="w-5 h-5" />
+                    <Trash2 className="w-5 h-5" onClick={() => handleDelete(item?.userId)} />
                   </button>
                 </div>
               </td>
@@ -264,7 +639,46 @@ const SalaryStatus = ({ salaryStatus }) => {
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+ const [selectedDriver, setSelectedDriver] = useState(null);
+console.log(selectedDriver,'selectedDriver')
 
+ // ... rest of your Dashboard code remains the same ...
+
+  const fetchDashboard = async () => {
+    try {
+      const response = await fetch(
+        "https://dashtar-new.vercel.app/api/admin/dashboard"
+      );
+      const data = await response.json();
+
+      setDashboardData(data);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+ const handleDelete = async (id) => {
+   if (window.confirm("Are you sure you want to delete this driver?")) {
+     try {
+       const response = await fetch(
+         `https://dashtar-new.vercel.app/api/admin/deleteDriver/${id}`,
+         {
+           method: "DELETE",
+         }
+       );
+
+       if (response.ok) {
+       
+         fetchDashboard();
+         handleDriverUpdate();
+       }
+     } catch (error) {
+       console.error("Error deleting driver:", error);
+     }
+   }
+ };
   // Fetch the dashboard data from API
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -326,7 +740,8 @@ const Dashboard = () => {
   // Map driverDetails to table rows data
   const driversData = dashboardData?.driverDetails.map((driver, index) => ({
     no: index + 1,
-    name: driver.fullName,
+    userId: driver?.userId,
+    name: driver.name,
     joinDate: new Date(driver.createdAt).toLocaleDateString(),
     vehicleType: driver.vehicleDetails
       ? `${driver.vehicleDetails.make} ${driver.vehicleDetails.model}`
@@ -354,7 +769,6 @@ const Dashboard = () => {
     };
 
   return (
-    
     <div className="p-6 bg-gray-50 min-h-screen overflow-x-hidden">
       {/* Stats Grid */}
       <div className="mb-8">
@@ -425,7 +839,12 @@ const Dashboard = () => {
           <OngoingTrips ongoingTripsData={ongoingTripsData} />
         </div>
         <div className="lg:col-span-4">
-          <SalaryStatus salaryStatus={dashboardData?.salaryStatus} />
+          <SalaryStatus
+            salaryStatus={dashboardData?.salaryStatus}
+            setSelectedDriver={setSelectedDriver}
+            setIsUpdateModalOpen={setIsUpdateModalOpen}
+            handleDelete={handleDelete}
+          />
         </div>
       </div>
 
@@ -500,10 +919,20 @@ const Dashboard = () => {
                   <td className="px-6 py-4">
                     <div className="flex space-x-3">
                       <button className="text-blue-600 hover:text-blue-800">
-                        <Edit2 className="w-4 h-4" />
+                        <Edit2
+                          className="w-5 h-5"
+                          onClick={() => {
+                            setSelectedDriver(driver?.userId);
+                            setIsUpdateModalOpen(true);
+                          }}
+                        />
                       </button>
                       <button className="text-red-600 hover:text-red-800">
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2
+                          className="w-5 h-5"
+                          onClick={() => handleDelete(driver?.userId)}
+                        />
+                        {console.log(driver, "driverrrrr")}
                       </button>
                     </div>
                   </td>
@@ -513,6 +942,12 @@ const Dashboard = () => {
           </table>
         </div>
       </div>
+      <UpdateDriverModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        driver={selectedDriver}
+        onUpdate={fetchDashboard}
+      />
     </div>
   );
 };
