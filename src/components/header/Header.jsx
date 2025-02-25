@@ -13,7 +13,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <img
-              src="https://s3-alpha-sig.figma.com/img/458f/cf69/7ebbf5216334db17ee5d543d365444df?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=iD4CTjXliBbD-GB0b8bEyDNKGd8JUpmZnOmAlzxU~PTKYbm1SjjvCzprrhzFpSMbcEzNpCC54jFtt5p~nchqrziBqZJHypEok5x-W4WYZZxpo2-4MQaxrAb2weAIapHjVEVtqQnJpY2l42I24~Ql1LCuEtyBRizABNGLifhyP6re1KaeYEIT4T1hIbQsuqUTLRMwpwBKhMYCIA9WjpM7abTEqH1fbze8DeJRdZN7RY98QZhG71s-U5Z-6xePLojn-kc87AOUZOPGE2Z2XMAv4wNeqROczcOPAvtNSxCz0LcJGm93BwqyfgAbTLMmkoSJdq46PprjY8e2R-yqzTCDEQ__"
+              src="https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659652_640.png"
               alt="Logo"
               className="w-10 h-10 rounded-full"
             />

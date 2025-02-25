@@ -10,7 +10,8 @@ const [index, setIndex] = useState(0)
     {id: 0, name: "Dashboard", icon: Grid, path: "/dashboard" },
     {id: 1, name: "Trips", icon: Car, path: "/trips" },
     {id: 2, name: "Drivers", icon: Users, path: "/drivers" },
-    {id: 3, name: "e-Commerce", icon: ShoppingBag, path: "/ecommerce" },
+    {id: 3, name: "New Drivers", icon: Users, path: "/new-drivers" },
+    {id: 4, name: "e-Commerce", icon: ShoppingBag, path: "/ecommerce" },
   ];
 
   return (
@@ -18,7 +19,7 @@ const [index, setIndex] = useState(0)
       {/* User Profile Section */}
       <div className="flex items-center space-x-3 p-4 mb-6">
         <img
-          src="https://s3-alpha-sig.figma.com/img/458f/cf69/7ebbf5216334db17ee5d543d365444df?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=iD4CTjXliBbD-GB0b8bEyDNKGd8JUpmZnOmAlzxU~PTKYbm1SjjvCzprrhzFpSMbcEzNpCC54jFtt5p~nchqrziBqZJHypEok5x-W4WYZZxpo2-4MQaxrAb2weAIapHjVEVtqQnJpY2l42I24~Ql1LCuEtyBRizABNGLifhyP6re1KaeYEIT4T1hIbQsuqUTLRMwpwBKhMYCIA9WjpM7abTEqH1fbze8DeJRdZN7RY98QZhG71s-U5Z-6xePLojn-kc87AOUZOPGE2Z2XMAv4wNeqROczcOPAvtNSxCz0LcJGm93BwqyfgAbTLMmkoSJdq46PprjY8e2R-yqzTCDEQ__"
+          src="https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659652_640.png"
           alt="Profile"
           className="w-10 h-10 rounded-full"
         />
@@ -38,9 +39,13 @@ const [index, setIndex] = useState(0)
                 to={item.path}
                 className={`flex items-center px-6 py-3 text-sm transition-colors ${
                   index === item.id
-                    ? "bg-black text-white"
+                    ? "text-white" // Keep text white for better contrast
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
+                style={{
+                  backgroundColor: index === item.id ? "rgba(219, 64, 60, 1)" : "transparent",
+                }}
+                
               >
                 <item.icon className="w-5 h-5 mr-4 text-lg" />
                 <span className="text-lg">{t(item.name)}</span>

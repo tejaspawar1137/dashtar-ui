@@ -1,3 +1,5 @@
+import NewDrivers from "@/pages/NewDriver";
+import DriverProfileDashboard from "@/pages/UpdateProfileDriver";
 import { lazy } from "react";
 
 // use lazy for better code splitting
@@ -49,6 +51,14 @@ const routes = [
    {
     path: "/drivers",
     component: Drivers,
+  },
+  {
+    path:"/new-drivers",
+    component: NewDrivers, 
+  },
+  {
+    path: "/update-profile",
+    component: DriverProfileDashboard
   },
   {
     path: "/products",
